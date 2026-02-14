@@ -2,6 +2,7 @@
 const envelope = document.getElementById("envelope-container");
 const letter = document.getElementById("letter-container");
 const bgMusic = document.getElementById("bg-music");
+const yayMusic = document.getElementById("yay-music");
 const noBtn = document.querySelector(".no-btn");
 const yesBtn = document.querySelector(".btn[alt='Yes']");
 
@@ -104,6 +105,14 @@ yesBtn.addEventListener("click", () => {
 
     catImg.src = "cat_dance.gif";
     endCat.style.display = "inline-block";
+
+    if (bgMusic) {
+        bgMusic.pause();
+    }
+
+    if (yayMusic) {
+        yayMusic.play().catch(e => console.log("Yay audio play failed:", e));
+    }
 
     document.querySelector(".letter-window").classList.add("final");
 
