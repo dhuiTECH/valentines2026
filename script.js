@@ -58,53 +58,39 @@ envelope.addEventListener("click", () => {
 // Logic to move the NO btn
 
 const moveRandomly = (el) => {
-    const elWidth = el.offsetWidth;
-    const elHeight = el.offsetHeight;
+    const elWidth = el.offsetWidth || 80;
+    const elHeight = el.offsetHeight || 40;
 
-    // Use visualViewport if available for more accurate mobile dimensions
-    const vWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-    const vHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const vWidth = window.innerWidth;
+    const vHeight = window.innerHeight;
 
-    // EXTREMELY AGGRESSIVE padding for iPhone (notches, browser bars, keyboard)
-    const padL = 40;
-    const padR = 40;
-    const padT = 120; // Massive top pad for notch/URL bar
-    const padB = 220; // Massive bottom pad for home indicator/tab bar
+    // Use a very safe middle area (centered)
+    // 70% of width, 50% of height
+    const safeAreaW = vWidth * 0.7;
+    const safeAreaH = vHeight * 0.5;
+    
+    const minX = (vWidth - safeAreaW) / 2;
+    const minY = (vHeight - safeAreaH) / 2;
 
-    // Reset transform to find the element's "home" position
-    const originalTransform = el.style.transform;
-    el.style.transform = 'none';
-    const rect = el.getBoundingClientRect();
-    el.style.transform = originalTransform;
+    const targetX = minX + Math.random() * (safeAreaW - elWidth);
+    const targetY = minY + Math.random() * (safeAreaH - elHeight);
 
-    // Calculate safe boundaries in viewport coordinates
-    // We force it to stay in the middle 60% of the screen height-wise
-    const minY = padT;
-    const maxY = vHeight - elHeight - padB;
-    const minX = padL;
-    const maxX = vWidth - elWidth - padR;
-
-    // Ensure we don't have negative ranges
-    const rangeY = Math.max(10, maxY - minY);
-    const rangeX = Math.max(10, maxX - minX);
-
-    // Random destination within safe bounds
-    const targetX = minX + Math.random() * rangeX;
-    const targetY = minY + Math.random() * rangeY;
-
-    // Calculate translation from original position
-    const moveX = targetX - rect.left;
-    const moveY = targetY - rect.top;
-
+    // Force fixed positioning to avoid layout issues
+    el.style.position = 'fixed';
+    el.style.left = '0';
+    el.style.top = '0';
+    el.style.margin = '0';
+    el.style.zIndex = '9999';
+    
     el.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-    el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    el.style.transform = `translate(${targetX}px, ${targetY}px)`;
 };
 
 noBtn.addEventListener("mouseover", () => moveRandomly(noBtn));
 noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     moveRandomly(noBtn);
-});
+}, { passive: false });
 
 // Logic to make YES btn to grow
 // ... existing commented out code ...
@@ -112,14 +98,16 @@ noBtn.addEventListener("touchstart", (e) => {
 // Logic to make YES btn to move away 10 times
 const handleYesMove = (e) => {
     if (yesMoveCount < 10) {
-        if (e.type === 'touchstart') e.preventDefault();
+        if (e.type === 'touchstart') {
+            e.preventDefault();
+        }
         moveRandomly(yesBtn);
         yesMoveCount++;
     }
 };
 
 yesBtn.addEventListener("mouseover", handleYesMove);
-yesBtn.addEventListener("touchstart", handleYesMove);
+yesBtn.addEventListener("touchstart", handleYesMove, { passive: false });
 
 // YES is clicked
 
