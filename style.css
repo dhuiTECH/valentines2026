@@ -144,3 +144,31 @@ display: inline-block;
     background-color: rgba(255,240,240,0.5);
     border-radius: 12px;
 }
+
+@media (max-width: 600px) {
+    .letter-window {
+        padding-top: 80px;
+        aspect-ratio: auto;
+        height: 80vh;
+        width: 95vw;
+        background-size: 100% 100%;
+    }
+    h1 {
+        font-size: 20px;
+    }
+    p {
+        font-size: 24px;
+    }
+    .cat {
+        width: 150px;
+    }
+    .letter-window.final .cat {
+        width: 100px;
+    }
+    .btn {
+        width: 80px;
+    }
+    .yes-btn, .no-btn {
+        width: 80px;
+    }
+}

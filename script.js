@@ -49,59 +49,56 @@ envelope.addEventListener("click", () => {
 
 // Logic to move the NO btn
 
-noBtn.addEventListener("mouseover", () => {
-    const min = 200;
-    const max = 200;
+const moveRandomly = (el) => {
+    const padding = 20;
+    const vWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    const vHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    
+    const elWidth = el.offsetWidth;
+    const elHeight = el.offsetHeight;
 
-    const distance = Math.random() * (max - min) + min;
-    const angle = Math.random() * Math.PI * 2;
+    // Reset transform to get original position
+    const originalTransform = el.style.transform;
+    el.style.transform = 'none';
+    const rect = el.getBoundingClientRect();
+    el.style.transform = originalTransform;
 
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
+    const originalLeft = rect.left;
+    const originalTop = rect.top;
 
-    noBtn.style.transition = "transform 0.3s ease";
-    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    const maxX = vWidth - elWidth - padding;
+    const maxY = vHeight - elHeight - padding;
+
+    const targetX = Math.random() * (maxX - padding) + padding;
+    const targetY = Math.random() * (maxY - padding) + padding;
+
+    const moveX = targetX - originalLeft;
+    const moveY = targetY - originalTop;
+
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+};
+
+noBtn.addEventListener("mouseover", () => moveRandomly(noBtn));
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveRandomly(noBtn);
 });
 
 // Logic to make YES btn to grow
-
-// let yesScale = 1;
-
-// yesBtn.style.position = "relative"
-// yesBtn.style.transformOrigin = "center center";
-// yesBtn.style.transition = "transform 0.3s ease";
-
-// noBtn.addEventListener("click", () => {
-//     yesScale += 2;
-
-//     if (yesBtn.style.position !== "fixed") {
-//         yesBtn.style.position = "fixed";
-//         yesBtn.style.top = "50%";
-//         yesBtn.style.left = "50%";
-//         yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-//     }else{
-//         yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
-//     }
-// });
+// ... existing commented out code ...
 
 // Logic to make YES btn to move away 10 times
-yesBtn.addEventListener("mouseover", () => {
+const handleYesMove = (e) => {
     if (yesMoveCount < 10) {
-        const min = 150;
-        const max = 250;
-
-        const distance = Math.random() * (max - min) + min;
-        const angle = Math.random() * Math.PI * 2;
-
-        const moveX = Math.cos(angle) * distance;
-        const moveY = Math.sin(angle) * distance;
-
-        yesBtn.style.transition = "transform 0.3s ease";
-        yesBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        
+        if (e.type === 'touchstart') e.preventDefault();
+        moveRandomly(yesBtn);
         yesMoveCount++;
     }
-});
+};
+
+yesBtn.addEventListener("mouseover", handleYesMove);
+yesBtn.addEventListener("touchstart", handleYesMove);
 
 // YES is clicked
 
