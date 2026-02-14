@@ -79,6 +79,13 @@ p {
 
 /* Cat */
 
+.cat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .cat {
     width: 250px;
     margin: 10px 0;

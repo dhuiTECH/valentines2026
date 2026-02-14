@@ -21,12 +21,19 @@
       <p>♡ Letter for You ♡</p>
     </div>
 
+    <audio id="bg-music" loop>
+      <source src="pixellove.mp3" type="audio/mpeg" />
+    </audio>
+
     <!-- Letter Screen -->
     <div id="letter-container">
       <div class="letter-window">
         <h1 id="letter-title">Will you be my Valentine?</h1>
 
-        <img src="cat_heart.gif" class="cat" id="letter-cat" />
+        <div class="cat-container">
+          <img src="cat_heart.gif" class="cat" id="letter-cat" />
+          <img src="end.gif" class="cat" id="end-cat" style="display: none" />
+        </div>
 
         <div class="buttons" id="letter-buttons">
           <img src="yes.png" class="btn yes-btn" alt="Yes" />
@@ -37,7 +44,7 @@
         </div>
 
         <p id="final-text" class="final-text" style="display: none">
-          <strong>Valentine Date:</strong> Meow Restaurant at 7pm. Dress fancy!
+          <strong>Valentine Date:</strong> Sushi Mahana at 6pm. Dress fancy!
         </p>
       </div>
     </div>
