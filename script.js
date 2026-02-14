@@ -19,10 +19,17 @@ window.addEventListener("load", () => {
     if (bgMusic) {
         bgMusic.play().catch(() => {
             // Autoplay blocked, will play on click
-            console.log("Autoplay blocked - will play on first click");
+            console.log("Autoplay blocked - will play on first interaction");
         });
     }
 });
+
+// Start music on first click anywhere (to bypass autoplay blocks)
+document.addEventListener("click", () => {
+    if (bgMusic && bgMusic.paused) {
+        bgMusic.play().catch(e => console.log("Audio play failed:", e));
+    }
+}, { once: true });
 
 // Click Envelope
 
