@@ -147,28 +147,33 @@ display: inline-block;
 
 @media (max-width: 600px) {
     .letter-window {
-        padding-top: 80px;
+        padding-top: 60px;
         aspect-ratio: auto;
-        height: 80vh;
-        width: 95vw;
+        height: 70vh;
+        width: 90vw;
         background-size: 100% 100%;
+        gap: 5px;
     }
     h1 {
         font-size: 20px;
+        margin-bottom: 5px;
     }
     p {
-        font-size: 24px;
+        font-size: 20px;
+    }
+    .cat-container {
+        margin: 5px 0;
     }
     .cat {
-        width: 150px;
+        width: 120px;
     }
     .letter-window.final .cat {
-        width: 100px;
+        width: 90px;
     }
     .btn {
-        width: 80px;
+        width: 70px;
     }
     .yes-btn, .no-btn {
-        width: 80px;
+        width: 70px;
     }
 }

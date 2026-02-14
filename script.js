@@ -50,14 +50,14 @@ envelope.addEventListener("click", () => {
 // Logic to move the NO btn
 
 const moveRandomly = (el) => {
+    const windowEl = document.querySelector(".letter-window");
+    const winRect = windowEl.getBoundingClientRect();
     const padding = 20;
-    const vWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-    const vHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
     
     const elWidth = el.offsetWidth;
     const elHeight = el.offsetHeight;
 
-    // Reset transform to get original position
+    // Reset transform to get original position relative to the document
     const originalTransform = el.style.transform;
     el.style.transform = 'none';
     const rect = el.getBoundingClientRect();
@@ -66,16 +66,20 @@ const moveRandomly = (el) => {
     const originalLeft = rect.left;
     const originalTop = rect.top;
 
-    const maxX = vWidth - elWidth - padding;
-    const maxY = vHeight - elHeight - padding;
+    // Constrain to the visible area of the letter-window
+    const minX = winRect.left + padding;
+    const maxX = winRect.right - elWidth - padding;
+    const minY = winRect.top + padding;
+    const maxY = winRect.bottom - elHeight - padding;
 
-    const targetX = Math.random() * (maxX - padding) + padding;
-    const targetY = Math.random() * (maxY - padding) + padding;
+    // Safety check for narrow windows
+    const targetX = Math.random() * (Math.max(minX, maxX) - minX) + minX;
+    const targetY = Math.random() * (Math.max(minY, maxY) - minY) + minY;
 
     const moveX = targetX - originalLeft;
     const moveY = targetY - originalTop;
 
-    el.style.transition = "transform 0.3s ease";
+    el.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
     el.style.transform = `translate(${moveX}px, ${moveY}px)`;
 };
 
