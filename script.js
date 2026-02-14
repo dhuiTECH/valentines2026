@@ -31,6 +31,14 @@ document.addEventListener("click", () => {
     }
 }, { once: true });
 
+// Ensure music loops correctly
+if (bgMusic) {
+    bgMusic.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+}
+
 // Click Envelope
 
 envelope.addEventListener("click", () => {
@@ -117,10 +125,6 @@ yesBtn.addEventListener("click", () => {
 
     catImg.src = "cat_dance.gif";
     endCat.style.display = "inline-block";
-
-    if (bgMusic) {
-        bgMusic.pause();
-    }
 
     if (yayMusic) {
         yayMusic.play().catch(e => console.log("Yay audio play failed:", e));
