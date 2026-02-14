@@ -1,6 +1,12 @@
-body {
+html, body {
     margin: 0;
-    height: 100vh;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,8 +155,8 @@ display: inline-block;
     .letter-window {
         padding-top: 60px;
         aspect-ratio: auto;
-        height: 70vh;
-        width: 90vw;
+        height: 60vh;
+        width: 85vw;
         background-size: 100% 100%;
         gap: 5px;
     }

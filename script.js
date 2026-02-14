@@ -50,34 +50,38 @@ envelope.addEventListener("click", () => {
 // Logic to move the NO btn
 
 const moveRandomly = (el) => {
-    const windowEl = document.querySelector(".letter-window");
-    const winRect = windowEl.getBoundingClientRect();
-    const padding = 20;
-    
     const elWidth = el.offsetWidth;
     const elHeight = el.offsetHeight;
 
-    // Reset transform to get original position relative to the document
+    // Use visualViewport if available for more accurate mobile dimensions
+    const vWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    const vHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+    // Very conservative padding for mobile (notches, browser bars, home indicator)
+    const padL = 25;
+    const padR = 25;
+    const padT = 80;
+    const padB = 160; // Extra large bottom padding to avoid iPhone bottom bar
+
+    // Reset transform to find the element's "home" position
     const originalTransform = el.style.transform;
     el.style.transform = 'none';
     const rect = el.getBoundingClientRect();
     el.style.transform = originalTransform;
 
-    const originalLeft = rect.left;
-    const originalTop = rect.top;
+    // Calculate safe bounds within the viewport
+    const minX = padL;
+    const maxX = Math.max(minX, vWidth - elWidth - padR);
+    const minY = padT;
+    const maxY = Math.max(minY, vHeight - elHeight - padB);
 
-    // Constrain to the visible area of the letter-window
-    const minX = winRect.left + padding;
-    const maxX = winRect.right - elWidth - padding;
-    const minY = winRect.top + padding;
-    const maxY = winRect.bottom - elHeight - padding;
+    // Random destination within safe bounds
+    const targetX = Math.random() * (maxX - minX) + minX;
+    const targetY = Math.random() * (maxY - minY) + minY;
 
-    // Safety check for narrow windows
-    const targetX = Math.random() * (Math.max(minX, maxX) - minX) + minX;
-    const targetY = Math.random() * (Math.max(minY, maxY) - minY) + minY;
-
-    const moveX = targetX - originalLeft;
-    const moveY = targetY - originalTop;
+    // Calculate how much we need to translate from original position
+    const moveX = targetX - rect.left;
+    const moveY = targetY - rect.top;
 
     el.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
     el.style.transform = `translate(${moveX}px, ${moveY}px)`;
