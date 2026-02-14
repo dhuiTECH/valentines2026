@@ -153,10 +153,10 @@ display: inline-block;
 
 @media (max-width: 600px) {
     .letter-window {
-        padding-top: 60px;
+        padding-top: 50px;
         aspect-ratio: auto;
-        height: 60vh;
-        width: 85vw;
+        height: 50vh;
+        width: 80vw;
         background-size: 100% 100%;
         gap: 5px;
     }

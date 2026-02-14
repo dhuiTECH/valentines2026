@@ -65,11 +65,11 @@ const moveRandomly = (el) => {
     const vWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     const vHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-    // Very conservative padding for mobile (notches, browser bars, home indicator)
-    const padL = 25;
-    const padR = 25;
-    const padT = 80;
-    const padB = 160; // Extra large bottom padding to avoid iPhone bottom bar
+    // EXTREMELY AGGRESSIVE padding for iPhone (notches, browser bars, keyboard)
+    const padL = 40;
+    const padR = 40;
+    const padT = 120; // Massive top pad for notch/URL bar
+    const padB = 220; // Massive bottom pad for home indicator/tab bar
 
     // Reset transform to find the element's "home" position
     const originalTransform = el.style.transform;
@@ -77,17 +77,22 @@ const moveRandomly = (el) => {
     const rect = el.getBoundingClientRect();
     el.style.transform = originalTransform;
 
-    // Calculate safe bounds within the viewport
-    const minX = padL;
-    const maxX = Math.max(minX, vWidth - elWidth - padR);
+    // Calculate safe boundaries in viewport coordinates
+    // We force it to stay in the middle 60% of the screen height-wise
     const minY = padT;
-    const maxY = Math.max(minY, vHeight - elHeight - padB);
+    const maxY = vHeight - elHeight - padB;
+    const minX = padL;
+    const maxX = vWidth - elWidth - padR;
+
+    // Ensure we don't have negative ranges
+    const rangeY = Math.max(10, maxY - minY);
+    const rangeX = Math.max(10, maxX - minX);
 
     // Random destination within safe bounds
-    const targetX = Math.random() * (maxX - minX) + minX;
-    const targetY = Math.random() * (maxY - minY) + minY;
+    const targetX = minX + Math.random() * rangeX;
+    const targetY = minY + Math.random() * rangeY;
 
-    // Calculate how much we need to translate from original position
+    // Calculate translation from original position
     const moveX = targetX - rect.left;
     const moveY = targetY - rect.top;
 
